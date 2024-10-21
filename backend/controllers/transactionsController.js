@@ -31,7 +31,7 @@ exports.settleTransaction = async (req,res) => {
         const transaction = req.body;
         console.log(transaction);
 
-        const transactionLog = new TransactionLog({
+        const savedLog = TransactionLog.create({
             payerName: transaction.payerName,
             payeeName: transaction.payeeName,
             amount: transaction.amount,
@@ -39,7 +39,6 @@ exports.settleTransaction = async (req,res) => {
             date: new Date()
         });
 
-        const savedLog = await transactionLog.save(); 
         if(savedLog)
         {
             const logId = savedLog._id;
