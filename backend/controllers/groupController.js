@@ -4,7 +4,7 @@ const User = require('../models/user');
 exports.createGroup = async (req,res) => {
     try{
         const groupData = req.body;
-        const groupCreated = Group.create({
+        const groupCreated = await Group.create({
             groupName: groupData.name,
             dateCreated: new Date(),
             owner: groupData.owner,
