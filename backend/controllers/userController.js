@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 exports.createUser = async (req,res) => {
     try{
         const userData = req.body;
-        const newUser = User.create({
+        const savedUser = User.create({
             'fname': userData.fname,
             'lname': userData.lname,
             'email': userData.email,
