@@ -4,15 +4,13 @@ const User = require('../models/user');
 exports.createGroup = async (req,res) => {
     try{
         const groupData = req.body;
-        const newGroup = new Group({
+        const groupCreated = Group.create({
             groupName: groupData.name,
             dateCreated: new Date(),
             owner: groupData.owner,
             members: groupData.members,
             pendingTransactions: [[0]]
         });
-
-        const groupCreated = await newGroup.save();
 
         if(groupCreated)
         {
