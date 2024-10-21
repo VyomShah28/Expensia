@@ -2,29 +2,16 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-// EXAMPLE
-
-// exports.getAllUsers = async (req, res) => {
-//     try {
-//         const users = await User.find();
-//         res.json(users);
-//     } catch (err) {
-//         res.status(500).json({ error: err.message });
-//     }
-// };
-
 exports.createUser = async (req,res) => {
     try{
         const userData = req.body;
-        
-        const newUser = new User({
+        const newUser = User.create({
             'fname': userData.fname,
             'lname': userData.lname,
             'email': userData.email,
             'password': await bcrypt.hash(userData.password,10)
         })
-
-        const savedUser = await newUser.save();
+        
         res.json({
             user : savedUser,
             message : "User Created Successfully!",
@@ -46,7 +33,7 @@ exports.loginUser = async (req,res) => {
         const loginData = req.body;
         
 
-        const user = await User.findOne({email: loginData.email});
+        const user = await User.findByEmail(loginData.email);
 
         if(!user)
         {
@@ -87,7 +74,9 @@ exports.loginUser = async (req,res) => {
 
 exports.getUser = async (req,res) => {
     try{
+        // Confusion over here as well ---> 
         const userId = req.tokenData.userId;
+        // --->
         console.log(userId);
         const user = await User.findById(userId);
 
