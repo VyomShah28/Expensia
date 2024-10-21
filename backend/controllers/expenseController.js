@@ -4,7 +4,7 @@ const Group = require("../models/group");
 exports.addExpense = async (req,res) => {
     try{
         const newExpense = req.body;
-        const toAddExpense = new Expense({
+        const addExpense = await Expense.create({
             description: newExpense.description,
             amount: newExpense.amount,
             date: new Date(newExpense.date),
@@ -12,8 +12,6 @@ exports.addExpense = async (req,res) => {
             splitType: newExpense.splitType,
             contributors: newExpense.contributors
         });
-
-        const addedExpense = await toAddExpense.save();
 
         if(addedExpense)
         {
@@ -33,13 +31,15 @@ exports.addExpense = async (req,res) => {
                     pendingTransactions[payerIndex][payeeIndex]+=contributor.pay;
                 }
             }
-            
+
+            // Part I did not understand From here to --- >
             const optimisedTransactions = process(pendingTransactions);
 
             const addPendingTransactionToGroup = await Group.findByIdAndUpdate(groupId,{
                 pendingTransactions: optimisedTransactions
             });
-        
+            
+            // ---> here 
 
             if(addPendingTransactionToGroup)
             {
